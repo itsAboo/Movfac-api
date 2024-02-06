@@ -36,15 +36,16 @@ const signup = (req, res, next) => __awaiter(void 0, void 0, void 0, function* (
         const hashPw = yield bcrypt_1.default.hash(password, 12);
         yield user_1.default.create({ email, password: hashPw });
         const userDoc = yield user_1.default.findOne({ email });
-        const token = jsonwebtoken_1.default.sign({ user: Object.assign(Object.assign({}, userDoc.toObject()), { password: undefined }) }, process.env.JWT_SECRET);
-        res.cookie("token", token, {
-            maxAge: 60 * 60 * 1000,
-            httpOnly: true,
-            secure: true,
-        });
+        const token = jsonwebtoken_1.default.sign({ user: Object.assign(Object.assign({}, userDoc.toObject()), { password: undefined }) }, process.env.JWT_SECRET, { expiresIn: "2h" });
+        // res.cookie("token", token, {
+        //   maxAge: 60 * 60 * 1000,
+        //   httpOnly: true,
+        //   secure: true,
+        // });
         res.status(200).json({
             msg: "สมัครสมาชิกสำเร็จ",
             user: Object.assign(Object.assign({}, userDoc === null || userDoc === void 0 ? void 0 : userDoc.toObject()), { password: undefined }),
+            token: token,
         });
     }
     catch (err) {
@@ -73,15 +74,16 @@ const login = (req, res, next) => __awaiter(void 0, void 0, void 0, function* ()
             res.status(401).json({ msg: "อีเมลหรือรหัสผ่านไม่ถูกต้อง", error: true });
             return;
         }
-        const token = jsonwebtoken_1.default.sign({ user: Object.assign(Object.assign({}, userDoc.toObject()), { password: undefined }) }, process.env.JWT_SECRET);
-        res.cookie("token", token, {
-            maxAge: 60 * 60 * 1000,
-            httpOnly: true,
-            secure: true,
-        });
+        const token = jsonwebtoken_1.default.sign({ user: Object.assign(Object.assign({}, userDoc.toObject()), { password: undefined }) }, process.env.JWT_SECRET, { expiresIn: "2h" });
+        // res.cookie("token", token, {
+        //   maxAge: 60 * 60 * 1000,
+        //   httpOnly: true,
+        //   secure: true,
+        // });
         res.status(200).json({
             msg: "เข้าสู่ระบบสำเร็จ",
             user: Object.assign(Object.assign({}, userDoc.toObject()), { password: undefined }),
+            token: token,
         });
     }
     catch (err) {

@@ -10,7 +10,7 @@ const router = express_1.default.Router();
 router.post("/signup", userController_1.signup);
 router.post("/login", userController_1.login);
 router.post("/logout", userController_1.logout);
-router.get("/check-is-login", userController_1.checkUserIsLogin);
+// router.get("/check-is-login", checkUserIsLogin);
 router.get("/get-user", auth_1.verifyToken, userController_1.getUser);
 router.patch("/update-user-name", auth_1.verifyToken, userController_1.updateUserName);
 router.patch("/update-plan", auth_1.verifyToken, userController_1.updatePlan);

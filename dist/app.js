@@ -18,7 +18,7 @@ app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.json());
 app.use((0, cors_1.default)({
     credentials: true,
-    origin: "http://localhost:5173",
+    origin: "https://movfac.netlify.app",
 }));
 app.use("/api", userRoute_1.default);
 app.use("/api", mediaRoute_1.default);

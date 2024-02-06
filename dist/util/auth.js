@@ -15,11 +15,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.verifyToken = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const token = req.cookies.token;
-    if (!token) {
+    var _a;
+    if (!req.headers.authorization) {
+        return res.status(404);
+    }
+    const token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(" ")[1];
+    if (!token || token === "null") {
         return res.status(401).json({ msg: "ไม่มี token" });
     }
     const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
+    console.log("decoded", decoded);
     if (!decoded) {
         return res.status(401).json({ msg: "ไม่มีสิทธิ์เข้าถึง" });
     }
@@ -27,3 +32,17 @@ const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     next();
 });
 exports.verifyToken = verifyToken;
+// export const verifyToken: RequestHandler = async (req, res, next) => {
+//   const token = req.cookies.token;
+//   if (!token) {
+//     return res.status(401).json({ msg: "ไม่มี token" });
+//   }
+//   const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
+//     user: UserDecoded;
+//   };
+//   if (!decoded) {
+//     return res.status(401).json({ msg: "ไม่มีสิทธิ์เข้าถึง" });
+//   }
+//   req.userId = decoded.user._id;
+//   next();
+// };
